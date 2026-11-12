@@ -23,7 +23,7 @@ const inputCls = "w-full border border-input bg-card px-4 py-3 text-sm text-fore
 
 export function InspectionScheduler({ defaultProperty }: { defaultProperty?: string }) {
   const options = properties.map((p) => `${p.title}, ${p.location}`);
-  const [property, setProperty] = useState(defaultProperty ?? options[0]);
+  const [property, setProperty] = useState<string>(defaultProperty ?? options[0] ?? "");
   const [date, setDate] = useState<Date>();
   const [time, setTime] = useState<string>();
   const [name, setName] = useState("");
@@ -38,7 +38,7 @@ export function InspectionScheduler({ defaultProperty }: { defaultProperty?: str
     setError(undefined);
     if (!date || !time) return setError("Choose a date and time for your inspection.");
     const parsed = schema.safeParse({ property, name, phone, notes });
-    if (!parsed.success) return setError(parsed.error.issues[0].message);
+    if (!parsed.success) return setError(parsed.error.issues[0]?.message ?? "Please check the form.");
     setBusy(true);
     // Open the tab synchronously so pop-up blockers allow it.
     const win = window.open("", "_blank");
@@ -56,7 +56,7 @@ export function InspectionScheduler({ defaultProperty }: { defaultProperty?: str
       return setError("We couldn't save your booking. Please try again or call 0901 472 7494.");
     }
     const url = whatsappLink(
-      buildInspectionMessage({ ...parsed.data, date: format(date, "EEEE, d MMMM yyyy"), time }),
+      buildInspectionMessage({ property: parsed.data.property, name: parsed.data.name, phone: parsed.data.phone, notes: parsed.data.notes ?? "", date: format(date, "EEEE, d MMMM yyyy"), time }),
     );
     setLink(url);
     if (win) win.location.href = url;
