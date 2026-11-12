@@ -1,7 +1,7 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { ArrowLeft, Check } from "lucide-react";
 import { getProperty, properties } from "@/data/properties";
-import { InquiryForm } from "@/components/inquiry-form";
+import { InspectionScheduler } from "@/components/inspection-scheduler";
 import { PropertyCard } from "@/components/property-card";
 
 export const Route = createFileRoute("/properties/$slug")({
@@ -105,9 +105,9 @@ function PropertyDetail() {
             <div className="space-y-4 border border-border bg-card p-6 shadow-card">
               <div className="space-y-1">
                 <p className="eyebrow">Request an inspection</p>
-                <h2 className="text-2xl text-foreground">Speak to a consultant</h2>
+                <h2 className="text-2xl text-foreground">Schedule a viewing on WhatsApp</h2>
               </div>
-              <InquiryForm defaultProperty={`${property.title}, ${property.location}`} />
+              <InspectionScheduler defaultProperty={`${property.title}, ${property.location}`} />
             </div>
           </div>
         </div>
